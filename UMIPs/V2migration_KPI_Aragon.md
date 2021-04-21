@@ -53,25 +53,29 @@ As there is no requirement for ongoing monitoring through liquidation or dispute
 
 This synthetic is designed as an incentivisation mechanism to push the Aragon DAO's to V2. Since it is an incentivisation program Aragon defined a top threshold that we aim to achieve of migrated assets (100MM USD in converted value of all tokens), and this threshold correspondents to maximium payout of the options for the available reward
 
-This contract will only be called once at expiry, there will be no need to run bots, thus this price feed is only applicable at the expiry timestamp.  
+This contract will only be called once at expiry, there will be no need to run bots, thus this price feed is only applicable at the expiry timestamp.
+
+More informatino about the program can be found on these tow proposals on snapshot: [Proposal 1 - The reward program and ANT collateral](https://snapshot.org/#/aragon/proposal/QmXDBG7ZdCfg4fSRDhSwNSsdXggjsLapP9q3ijArysS56C) and [Proposal 2 - Upper AUM threshold for the program](https://snapshot.org/#/aragon/proposal/QmXq7KzLPQUeqxQ9cceoHwFR3oxoq7oTHHeNLfhrXNehJ9)
+
 
 # **IMPLEMENTATION**
 
-- The value of an option can get determined simply requesting it at the following end-point provided by the Aragon Association: [datafeed.aragon.org](https://datafeed.aragon.org)
+- The value of an option can get determined be performing a GET request at the following endpoint provided by the Aragon Association: [datafeed.aragon.org](https://datafeed.aragon.org)
 - The total value locked is the Aragon AUM within the EMP contract of UMA.
 
-To request our data end-point for the Aragon KPI options value can you send a simple GET request to ``datafeed.aragon.org``. 
-
 1. **What prices should be queried for and from which markets?**
-    - The value of an option is calculated based on all funds migrated from V1 DAOs to V2 DAOs and can get requested from our end-point at: [datafeed.aragon.org](https://datafeed.aragon.org)
-    - The value of those founds are calculated based on the prices provided by [https://www.coingecko.com/](https://www.coingecko.com/) 
+    - The value of an option is calculated based on all funds migrated from V1 DAOs to V2 DAOs and can get requested from our endpoint at: [datafeed.aragon.org](https://datafeed.aragon.org)
+    - The funds that were migrated will have its USD value calculated based on the prices provided by [https://www.coingecko.com/](https://www.coingecko.com/) 
 2. **Pricing interval**
-    - The pricing interval can be done each day at 00:00.
+    - The pricing interval are updated each day at 00:00.
 3. **Input processing**
-    - To get the latest price of the KPI options is a simple GET request required to [datafeed.aragon.org](https://datafeed.aragon.org).
+    - To get the latest price of the KPI options perform a simple GET request to [datafeed.aragon.org](https://datafeed.aragon.org).
 4. **Result processing**
-    - The result doesn't need any further processing because our end-point will directly provide the correctly calculated value of an option.
-    - The following calculation is done: Option price (in ANT) = 100k*(total migrated asset/100MM) / 1MM 
+    - The result doesn't need any further processing because our endpoint will directly provide the correctly calculated value of an option.
+    - The following calculation is done: Option price (in ANT) = 100k*(Total assets migrated by DAOs to v2 in USD/100MM USD) / 1MM 
+    - 100k - amount of ANT collateral allocated to reward program
+    - 1MM - amount of options that will be issued
+    - Amount of optinos that will be redeemable by each DAO = (Amount of assets the DAO migrated in USD)/100MM USD * 1MM 
 
 # **Security considerations**
 
